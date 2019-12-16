@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: ryan-information
+  datasource:
+    url: jdbc:h2:mem:information
+    driverClassName: org.h2.Driver
+    username: ryan
+    password: 1
+    platform: h2
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
+      settings:
+        trace: false
+        web-allow-others: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Seoul
+  devtools:
+    livereload:
+      enabled: true
+
+server:
+  port: 8080
