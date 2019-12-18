@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.config;
+package com.ryanpark.information.framework.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
