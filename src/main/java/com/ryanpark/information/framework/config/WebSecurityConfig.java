@@ -5,6 +5,7 @@
 package com.ryanpark.information.framework.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  * description : Spring Security Config
  */
 @EnableWebSecurity
+@Profile("!test-non-secure")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
