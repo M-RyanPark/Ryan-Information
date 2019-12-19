@@ -22,12 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
@@ -53,6 +55,10 @@ public class BaseBusinessExceptionTest {
 
 	@Autowired
 	ObjectMapper objectMapper;
+
+	// account WebSecurityConfig 를 disable 하여 passwordEncoder 가 없어 mock을 생성해준다
+	@MockBean
+	PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	public void setUp() {

@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -43,6 +45,10 @@ public class ErrorResponseFormatTest {
 
 	@Autowired
 	WebApplicationContext context;
+
+	// account WebSecurityConfig 를 disable 하여 passwordEncoder 가 없어 mock을 생성해준다
+	@MockBean
+	PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	public void prepare() {
