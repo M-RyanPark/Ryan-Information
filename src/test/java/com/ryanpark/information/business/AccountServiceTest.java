@@ -4,6 +4,7 @@
 
 package com.ryanpark.information.business;
 
+import com.ryanpark.information.common.domain.AccountUserDetails;
 import com.ryanpark.information.common.repository.AccountRepository;
 import com.ryanpark.information.common.repository.entity.Account;
 import com.ryanpark.information.common.service.AccountService;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -33,6 +36,8 @@ public class AccountServiceTest extends BusinessCommonTest {
 	@Autowired AccountService accountService;
 	@Autowired PasswordEncoder passwordEncoder;
 	@MockBean AccountRepository accountRepository;
+	@Autowired UserDetailsService userDetailsService;
+
 
 	private String userId = "userId";
 	private String password = "password";
@@ -102,7 +107,6 @@ public class AccountServiceTest extends BusinessCommonTest {
 	@Test
 	public void account_terminate_success() {
 		given(accountRepository.findByUserId(userId)).willReturn(Optional.of(mockAccount));
-
 		accountService.terminateAccount(userId);
 
 		final Account updated = accountService.findAccount(userId).orElseThrow(RuntimeException::new);
@@ -116,7 +120,6 @@ public class AccountServiceTest extends BusinessCommonTest {
 	@Test
 	public void account_restore_success() {
 		Account terminated = Account.of(userId, encodedPassword).changeStatus(Account.AccountStatus.TERMINATE);
-
 		given(accountRepository.findByUserId(userId)).willReturn(Optional.of(terminated));
 
 		accountService.restoreAccount(userId);
@@ -127,5 +130,21 @@ public class AccountServiceTest extends BusinessCommonTest {
 
 		assertNotNull(updated);
 		assertEquals(Account.AccountStatus.ACTIVE, updated.getStatus());
+	}
+
+	@Test
+	public void account_load_by_username_test() {
+		given(accountRepository.findByUserId(userId)).willReturn(Optional.of(mockAccount));
+
+		UserDetails userDetails = userDetailsService.loadUserByUsername(mockAccount.getUserId());
+
+		log.info("UserDetails = {}", userDetails);
+
+		assertNotNull(userDetails);
+		assertTrue(AccountUserDetails.class.isAssignableFrom(userDetails.getClass()));
+		assertEquals(mockAccount.getUserId(), userDetails.getUsername());
+		assertEquals(mockAccount.getPassword(), userDetails.getPassword());
+		assertEquals(mockAccount.isActive(), userDetails.isAccountNonExpired());
+		assertEquals(mockAccount.isActive(), userDetails.isEnabled());
 	}
 }

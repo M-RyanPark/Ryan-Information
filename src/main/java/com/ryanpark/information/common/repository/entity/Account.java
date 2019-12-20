@@ -23,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account extends BaseEntity {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userNo;
 
 	@Column(length = 30, nullable = false, unique = true)
@@ -36,6 +36,7 @@ public class Account extends BaseEntity {
 	private boolean active;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private AccountStatus status;
 
 	@ElementCollection(fetch = FetchType.EAGER)
