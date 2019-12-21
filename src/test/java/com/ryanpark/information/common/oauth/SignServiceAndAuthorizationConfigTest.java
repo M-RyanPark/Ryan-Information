@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.common;
+package com.ryanpark.information.common.oauth;
 
 import com.ryanpark.information.business.BusinessCommonTest;
 import com.ryanpark.information.common.domain.api.SignInRequest;
