@@ -7,12 +7,10 @@ package com.ryanpark.information.repository;
 import com.ryanpark.information.common.repository.AccountRepository;
 import com.ryanpark.information.common.repository.entity.Account;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.PersistenceException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +44,7 @@ public class AccountRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void account_test_create_fail_dup_user_id() {
-		expect_ConstratinViolationException(() -> {
+		expect_ConstraintViolationException(() -> {
 			final Account account1 = Account.of("test1", "test1");
 			final Account account2 = Account.of("test1", "test1");
 
@@ -62,7 +60,7 @@ public class AccountRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void account_test_create_fail_long_user_id() {
-		expect_ConstratinViolationException(() -> {
+		expect_ConstraintViolationException(() -> {
 			final Account account = Account.of("test12222222222222222222222222222222222222222222222222222222222", "test1");
 
 			accountRepository.save(account);
@@ -72,7 +70,7 @@ public class AccountRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void account_test_create_fail_null_validation() {
-		expect_ConstratinViolationException(() -> {
+		expect_ConstraintViolationException(() -> {
 			final Account account = Account.of("test12", "test12");
 			account.changeStatus(null);
 
@@ -81,15 +79,9 @@ public class AccountRepositoryTest extends CommonRepositoryTest {
 		});
 	}
 
-	private void expect_ConstratinViolationException(Executable executable) {
-		Exception exception = assertThrows(PersistenceException.class, () -> {
-			final Account account = Account.of("test12", "test12");
-			account.changeStatus(null);
+	private void expect_ConstraintViolationException(Executable executable) {
+		Exception exception = assertThrows(DataIntegrityViolationException.class, executable);
 
-			accountRepository.save(account);
-			entityManager.flush();
-		});
-
-		assertTrue(exception.getClass().isAssignableFrom(ConstraintViolationException.class));
+		assertTrue(exception.getClass().isAssignableFrom(DataIntegrityViolationException.class));
 	}
 }

@@ -37,8 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Slf4j
 @SpringBootTest
-@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
-@ActiveProfiles("test-non-secure")
 public class ErrorResponseFormatTest {
 
 	MockMvc mockMvc;

@@ -44,8 +44,6 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
-@ActiveProfiles("test-non-secure")
 public class BaseBusinessExceptionTest {
 
 	private static final String ERROR_TEST_PATH_FORMAT = "/test/error/%s";

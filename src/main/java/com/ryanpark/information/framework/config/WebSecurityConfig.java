@@ -4,16 +4,18 @@
 
 package com.ryanpark.information.framework.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
  * @author : Sanghyun Ryan Park (sanghyun.ryan.park@gmail.com)
@@ -21,25 +23,40 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  * description : Spring Security Config
  */
 @EnableWebSecurity
-@Profile("!test-non-secure")
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Bean
+	final UserDetailsService userDetailsService;
+
 	@Override
-	protected UserDetailsService userDetailsService() {
-		return new InMemoryUserDetailsManager(
-				User.withDefaultPasswordEncoder()
-						.username("enduser")
-						.password("password")
-						.roles("USER")
-						.build()
-		);
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+				.antMatchers("/js/**", "/css/**", "/h2/**", "/test/error/**");
 	}
 
-	@Bean("authenticationManagerBean")
 	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.csrf()
+					.disable()
+				.sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authorizeRequests()
+					.antMatchers("/sign/**").permitAll()
+					.antMatchers("/h2/**").permitAll()
+					.antMatchers("/error").permitAll()
+					.anyRequest().authenticated()
+				;
+	}
+
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		authenticationProvider.setUserDetailsService(userDetailsService);
+
+		return authenticationProvider;
 	}
 
 	@Bean

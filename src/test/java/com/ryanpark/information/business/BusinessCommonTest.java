@@ -6,8 +6,6 @@ package com.ryanpark.information.business;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Random;
-
 /**
  * @author : Sanghyun Ryan Park (sanghyun.ryan.park@gmail.com)
  * @since : 2019-12-19
