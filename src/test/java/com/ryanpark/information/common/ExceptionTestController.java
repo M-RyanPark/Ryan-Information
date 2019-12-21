@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.api;
+package com.ryanpark.information.common;
 
 import com.ryanpark.information.framework.exception.BaseBusinessException;
 import com.ryanpark.information.framework.exception.ErrorResponse;

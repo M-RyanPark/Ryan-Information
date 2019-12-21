@@ -2,8 +2,9 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.business;
+package com.ryanpark.information.common;
 
+import com.ryanpark.information.business.BusinessCommonTest;
 import com.ryanpark.information.common.domain.AccountUserDetails;
 import com.ryanpark.information.common.repository.AccountRepository;
 import com.ryanpark.information.common.repository.entity.Account;
