@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.error;
+package com.ryanpark.information.common.error;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,10 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.stream.Stream;
@@ -37,13 +39,17 @@ import java.util.stream.Stream;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BaseBusinessExceptionTest {
 
-	private String ERROR_TEST_PATH_FORMAT = "/test/error/%s";
+	private static final String ERROR_TEST_PATH_FORMAT = "/test/error/%s";
 
 	@Autowired
 	TestRestTemplate testRestTemplate;
 
 	@Autowired
 	ObjectMapper objectMapper;
+
+	// account WebSecurityConfig 를 disable 하여 passwordEncoder 가 없어 mock을 생성해준다
+	@MockBean
+	PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	public void setUp() {
@@ -53,7 +59,8 @@ public class BaseBusinessExceptionTest {
 								(request, body, execution) -> {
 									request.getHeaders()
 											.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
+									request.getHeaders()
+											.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 									return execution.execute(request, body);
 								})
 				);

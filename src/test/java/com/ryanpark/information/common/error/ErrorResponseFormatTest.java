@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.error;
+package com.ryanpark.information.common.error;
 
 import com.ryanpark.information.framework.exception.AuthenticationException;
 import com.ryanpark.information.framework.exception.DefaultErrorResponse;
@@ -12,7 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -38,6 +40,10 @@ public class ErrorResponseFormatTest {
 
 	@Autowired
 	WebApplicationContext context;
+
+	// account WebSecurityConfig 를 disable 하여 passwordEncoder 가 없어 mock을 생성해준다
+	@MockBean
+	PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	public void prepare() {

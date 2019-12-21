@@ -19,7 +19,8 @@
 #### 공통
 * spring-boot-oauth2, spring-security를 기반으로 구현
 * test 환경의 특성성 Authorization Server 와 Resource Server가 같은 package내에 존재
-* JWT secret은 비대칭 key pair를 사용
+* JWT를 이용한 access, refresh token을 사용, JWT secret은 비대칭 key pair를 사용
+* Authorization Server 에서 Rest Api를 통한 token 발급을 위하여 별도의 grant_type 정의 하여 사용 
 
 #### 1. Authorization Server
 #### 2. Resource Server

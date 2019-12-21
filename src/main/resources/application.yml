@@ -29,3 +29,19 @@ spring:
 
 server:
   port: 8080
+
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value:
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnP/0MjoDyGYEUkYvNF1l
+          qo/1gcLCF5G6R5HevzovTR3ztt9aTJtH09vB9xtk/8tzoyt66zhz8rfdrT5c1lWk
+          aQJRBmDMycxMQP0G1900bRGY+WwcR/DZ27do5q3alICVXL7lExBCmvFWIuIFUpAb
+          ZPvuYCsrVk61KHi0fCnhm1n8Fo1lg4Kax+7Fl3Kj73Gahfvm228LyyowV2QGuoPB
+          lPJpxJMoXYtBbZcPkfv0GfJCjEOGtmm7/4UTLAanRR6igl1TWCpst9hgOf+RMvCX
+          zO6uO17F6MDmQvWZY8p9cQpwHqiWaDzwQjA9nI6fpOMPn5iAijpKFhMhWOYgkCnI
+          lQIDAQAB
+          -----END PUBLIC KEY-----
