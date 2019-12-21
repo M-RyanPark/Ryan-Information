@@ -2,12 +2,10 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.error;
+package com.ryanpark.information.common.error;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ryanpark.information.framework.config.AuthorizationServerConfig;
-import com.ryanpark.information.framework.config.WebSecurityConfig;
 import com.ryanpark.information.framework.exception.DefaultErrorResponse;
 import com.ryanpark.information.framework.exception.ErrorResponse;
 import lombok.AccessLevel;
@@ -19,18 +17,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
 import java.util.stream.Stream;
