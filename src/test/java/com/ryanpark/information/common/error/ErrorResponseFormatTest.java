@@ -4,23 +4,23 @@
 
 package com.ryanpark.information.common.error;
 
+import com.ryanpark.information.framework.config.ExceptionConfig;
 import com.ryanpark.information.framework.exception.AuthenticationException;
 import com.ryanpark.information.framework.exception.DefaultErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.RequestDispatcher;
+import javax.sql.DataSource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,25 +33,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * description : BasicErrorController 가 ExceptionConfig에 설정한 규격대로 반환 되는 지를 테스트
  */
 @Slf4j
-@SpringBootTest
+@WebMvcTest(
+		controllers = BasicErrorController.class
+)
+@Import(ExceptionConfig.class)
+@MockBean(classes = {UserDetailsService.class, DataSource.class})
 public class ErrorResponseFormatTest {
 
+	@Autowired
 	MockMvc mockMvc;
 
-	@Autowired
-	WebApplicationContext context;
 
-	// account WebSecurityConfig 를 disable 하여 passwordEncoder 가 없어 mock을 생성해준다
-	@MockBean
-	PasswordEncoder passwordEncoder;
-
-	@BeforeEach
-	public void prepare() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(context)
-				.addFilters(new CharacterEncodingFilter("UTF-8", true))
-				.alwaysDo(print())
-				.build();
-	}
 	@Test
 	public void error_response_format() throws Exception {
 		int status = DefaultErrorResponse.UNAUTHORIZED.getStatus().value();

@@ -4,19 +4,17 @@
 
 package com.ryanpark.information.common.oauth;
 
-import com.ryanpark.information.business.BusinessCommonTest;
-import com.ryanpark.information.common.domain.AccountUserDetails;
 import com.ryanpark.information.common.repository.AccountRepository;
 import com.ryanpark.information.common.repository.entity.Account;
 import com.ryanpark.information.common.service.AccountService;
+import com.ryanpark.information.common.service.impl.AccountServiceImpl;
 import com.ryanpark.information.framework.exception.BaseBusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -25,29 +23,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author : Sanghyun Ryan Park (sanghyun.ryan.park@gmail.com)
  * @since : 2019-12-19
  * description : AccountService 테스트
  */
+@SpringBootTest(classes = AccountServiceImpl.class)
 @Slf4j
-public class AccountServiceTest extends BusinessCommonTest {
+public class AccountServiceTest  {
 
 	@Autowired AccountService accountService;
-	@Autowired PasswordEncoder passwordEncoder;
+	@MockBean PasswordEncoder passwordEncoder;
 	@MockBean AccountRepository accountRepository;
-	@Autowired UserDetailsService userDetailsService;
 
 
 	private String userId = "userId";
 	private String password = "password";
-	private String encodedPassword;
+	private String encodedPassword = "encoded_password";
 	private Account mockAccount;
 
 	@BeforeEach
 	public void setUp() {
-		encodedPassword = passwordEncoder.encode(password);
 		mockAccount = Account.of(userId, encodedPassword);
 	}
 
@@ -62,9 +60,11 @@ public class AccountServiceTest extends BusinessCommonTest {
 
 		assertNotNull(newAccount);
 		assertEquals(userId, newAccount.getUserId());
-		assertTrue(passwordEncoder.matches(password, newAccount.getPassword()));
 		assertEquals(Account.AccountStatus.ACTIVE, newAccount.getStatus());
 		assertTrue(newAccount.isActive());
+
+		verify(accountRepository).findByUserId(anyString());
+		verify(accountRepository).save(any(Account.class));
 	}
 
 	@Test
@@ -74,6 +74,8 @@ public class AccountServiceTest extends BusinessCommonTest {
 
 			accountService.createAccount(userId, password);
 		});
+
+		verify(accountRepository).findByUserId(anyString());
 	}
 
 	@Test
@@ -81,14 +83,12 @@ public class AccountServiceTest extends BusinessCommonTest {
 		String changePassword = "change_password";
 
 		given(accountRepository.findByUserId(userId)).willReturn(Optional.of(mockAccount));
+		given(passwordEncoder.encode(anyString())).willReturn(changePassword);
 
 		accountService.changePassword(userId, changePassword);
 
-		final Account changed = accountService.findAccount(userId).orElseThrow(RuntimeException::new);
-
-		log.info("changed account = {}", changed);
-		assertTrue(passwordEncoder.matches(changePassword, changed.getPassword()));
-		assertFalse(passwordEncoder.matches(password, changed.getPassword()), "기존 패스 워드와 hash 값 다름");
+		verify(accountRepository).findByUserId(anyString());
+		verify(passwordEncoder).encode(anyString());
 	}
 
 	@Test
@@ -131,21 +131,5 @@ public class AccountServiceTest extends BusinessCommonTest {
 
 		assertNotNull(updated);
 		assertEquals(Account.AccountStatus.ACTIVE, updated.getStatus());
-	}
-
-	@Test
-	public void account_load_by_username_test() {
-		given(accountRepository.findByUserId(userId)).willReturn(Optional.of(mockAccount));
-
-		UserDetails userDetails = userDetailsService.loadUserByUsername(mockAccount.getUserId());
-
-		log.info("UserDetails = {}", userDetails);
-
-		assertNotNull(userDetails);
-		assertTrue(AccountUserDetails.class.isAssignableFrom(userDetails.getClass()));
-		assertEquals(mockAccount.getUserId(), userDetails.getUsername());
-		assertEquals(mockAccount.getPassword(), userDetails.getPassword());
-		assertEquals(mockAccount.isActive(), userDetails.isAccountNonExpired());
-		assertEquals(mockAccount.isActive(), userDetails.isEnabled());
 	}
 }
