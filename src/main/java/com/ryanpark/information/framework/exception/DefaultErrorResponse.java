@@ -27,6 +27,8 @@ public enum DefaultErrorResponse implements ErrorResponse {
 	,
 	NOT_FOUND(HttpStatus.NOT_FOUND, "URL Not Found", "존재하지 않는 주소입니다.")
 	,
+	DATA_NOT_FOUND(HttpStatus.NOT_FOUND, "Data Not Found", "조회 하려는 데이터가 없습니다.")
+	,
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "Not allowed method", "허용되지 않는 요청입니다.")
 	,
 	INVALID(HttpStatus.CONFLICT, "Invalid Business", "유효하지 않은 요청입니다.")
