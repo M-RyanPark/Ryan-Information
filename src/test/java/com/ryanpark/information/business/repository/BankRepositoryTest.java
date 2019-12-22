@@ -5,7 +5,7 @@
 package com.ryanpark.information.business.repository;
 
 import com.ryanpark.information.business.finance.repsitory.BankRepository;
-import com.ryanpark.information.business.finance.repsitory.entity.Bank;
+import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 import com.ryanpark.information.common.repository.CommonRepositoryTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -33,10 +33,10 @@ public class BankRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void bank_save_and_find_success() {
-		final Bank saved = bankRepository.save(Bank.of(BANK_NAME_KB));
+		final BankEntity saved = bankRepository.save(BankEntity.of(BANK_NAME_KB));
 		log.info("saved = {}", saved);
 
-		final Bank findBank = bankRepository.findByName(BANK_NAME_KB).orElse(null);
+		final BankEntity findBank = bankRepository.findByName(BANK_NAME_KB).orElse(null);
 
 		assertNotNull(saved);
 		assertEquals(findBank, saved);
@@ -45,11 +45,11 @@ public class BankRepositoryTest extends CommonRepositoryTest {
 	@Test
 	public void bank_save_fail_dup_bank_name() {
 		expect_ConstraintViolationException(() -> {
-			final Bank saved1 = bankRepository.save(Bank.of(BANK_NAME_KB));
+			final BankEntity saved1 = bankRepository.save(BankEntity.of(BANK_NAME_KB));
 			log.info("saved1 = {}", saved1);
 			entityManager.flush();
 
-			final Bank saved2 = bankRepository.save(Bank.of(BANK_NAME_KB));
+			final BankEntity saved2 = bankRepository.save(BankEntity.of(BANK_NAME_KB));
 			log.info("saved2 = {}", saved2);
 			entityManager.flush();
 		});
@@ -57,11 +57,11 @@ public class BankRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void bank_save_and_find_all_success() {
-		bankRepository.save(Bank.of(BANK_NAME_KB));
-		bankRepository.save(Bank.of(BANK_NAME_SH));
-		bankRepository.save(Bank.of(BANK_NAME_WR));
+		bankRepository.save(BankEntity.of(BANK_NAME_KB));
+		bankRepository.save(BankEntity.of(BANK_NAME_SH));
+		bankRepository.save(BankEntity.of(BANK_NAME_WR));
 
-		List<Bank> bankList = bankRepository.findAll();
+		List<BankEntity> bankList = bankRepository.findAll();
 		log.info("bankList = {}", bankList);
 
 		assertNotNull(bankList);

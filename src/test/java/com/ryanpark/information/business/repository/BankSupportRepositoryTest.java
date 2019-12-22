@@ -5,8 +5,8 @@
 package com.ryanpark.information.business.repository;
 
 import com.ryanpark.information.business.finance.repsitory.BankSupportRepository;
-import com.ryanpark.information.business.finance.repsitory.entity.Bank;
-import com.ryanpark.information.business.finance.repsitory.entity.BankSupport;
+import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
+import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
 import com.ryanpark.information.common.repository.CommonRepositoryTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +33,8 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 	@Autowired
 	BankSupportRepository bankSupportRepository;
 
-	Map<String, Bank> sampleBank = sampleMap();
-	List<BankSupport> sampleBankSupportList = sampleSupportList();
+	Map<String, BankEntity> sampleBank = sampleMap();
+	List<BankSupportEntity> sampleBankSupportList = sampleSupportList();
 
 	@BeforeEach
 	public void setUp() {
@@ -44,7 +44,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void bank_support_save_success() {
-		final BankSupport saved = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2017, 1));
+		final BankSupportEntity saved = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2017, 1));
 		log.info("saved = {}", saved);
 
 		assertNotNull(saved);
@@ -53,11 +53,11 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 	@Test
 	public void bank_support_save_fail_dup_unique_index() {
 		expect_ConstraintViolationException(() -> {
-			final BankSupport saved1 = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2015, 1));
+			final BankSupportEntity saved1 = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2015, 1));
 			log.info("saved1 = {}", saved1);
 			entityManager.flush();
 
-			final BankSupport saved2 = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2015, 1));
+			final BankSupportEntity saved2 = bankSupportRepository.save(sampleBankSupport(BANK_NAME_WR, 2015, 1));
 			log.info("saved2 = {}", saved2);
 			entityManager.flush();
 		});
@@ -65,7 +65,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 
 	@Test
 	public void bank_support_find_all_success() {
-		final List<BankSupport> list = bankSupportRepository.findAll();
+		final List<BankSupportEntity> list = bankSupportRepository.findAll();
 
 		assertEquals(sampleBankSupportList.size(), list.size());
 	}
@@ -74,7 +74,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 	public void bank_support_find_by_year_success() {
 		int year = 2010;
 
-		final List<BankSupport> list = bankSupportRepository.findAllByYear(2010);
+		final List<BankSupportEntity> list = bankSupportRepository.findAllByYear(2010);
 
 		assertEquals(sampleBankSupportList.stream().filter(x -> x.getYear() == year).count(), list.size());
 	}
@@ -83,7 +83,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 	public void bank_support_find_by_bank_name_success() {
 		String bankName = BANK_NAME_SH;
 
-		final List<BankSupport> list = bankSupportRepository.findAllByBank_name(bankName);
+		final List<BankSupportEntity> list = bankSupportRepository.findAllByBank_name(bankName);
 
 		assertEquals(sampleBankSupportList.stream().filter(x -> x.getBank().getName().equals(bankName)).count(), list.size());
 	}
@@ -94,7 +94,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 		int year = 2011;
 		int month = 3;
 
-		final List<BankSupport> list = bankSupportRepository.findAllByBank_nameAndYearAndMonth(bankName, year, month);
+		final List<BankSupportEntity> list = bankSupportRepository.findAllByBank_nameAndYearAndMonth(bankName, year, month);
 
 		assertEquals(sampleBankSupportList
 						.stream()
@@ -105,7 +105,7 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 				, list.size());
 	}
 
-	private List<BankSupport> sampleSupportList() {
+	private List<BankSupportEntity> sampleSupportList() {
 		return Arrays.asList(
 				sampleBankSupport(BANK_NAME_KB, 2010, 1)
 				, sampleBankSupport(BANK_NAME_KB, 2010, 2)
@@ -118,22 +118,22 @@ public class BankSupportRepositoryTest extends CommonRepositoryTest {
 		);
 	}
 
-	private Map<String, Bank> sampleMap() {
-		Map<String, Bank> sampleMap = new HashMap<>();
+	private Map<String, BankEntity> sampleMap() {
+		Map<String, BankEntity> sampleMap = new HashMap<>();
 
-		sampleMap.put(BANK_NAME_KB, Bank.of(BANK_NAME_KB));
-		sampleMap.put(BANK_NAME_SH, Bank.of(BANK_NAME_SH));
-		sampleMap.put(BANK_NAME_WR, Bank.of(BANK_NAME_WR));
+		sampleMap.put(BANK_NAME_KB, BankEntity.of(BANK_NAME_KB));
+		sampleMap.put(BANK_NAME_SH, BankEntity.of(BANK_NAME_SH));
+		sampleMap.put(BANK_NAME_WR, BankEntity.of(BANK_NAME_WR));
 
 		return sampleMap;
 	}
 
-	private BankSupport sampleBankSupport(String bankName, int year, int month) {
-		Bank bank = new Bank();
+	private BankSupportEntity sampleBankSupport(String bankName, int year, int month) {
+		BankEntity bank = new BankEntity();
 		bank.setName(bankName);
 		bank.setCode(1);
 
-		BankSupport bankSupport = new BankSupport();
+		BankSupportEntity bankSupport = new BankSupportEntity();
 		bankSupport.setBank(sampleBank.get(bankName));
 		bankSupport.setYear(year);
 		bankSupport.setMonth(month);

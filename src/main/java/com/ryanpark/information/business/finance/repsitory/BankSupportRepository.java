@@ -4,7 +4,7 @@
 
 package com.ryanpark.information.business.finance.repsitory;
 
-import com.ryanpark.information.business.finance.repsitory.entity.BankSupport;
+import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,8 +14,8 @@ import java.util.List;
  * @since : 2019-12-22
  * description : 금융 기관 별 지원 금액 repository
  */
-public interface BankSupportRepository extends JpaRepository<BankSupport, Integer> {
-	List<BankSupport> findAllByYear(Integer year);
-	List<BankSupport> findAllByBank_name(String name);
-	List<BankSupport> findAllByBank_nameAndYearAndMonth(String name, Integer year, Integer month);
+public interface BankSupportRepository extends JpaRepository<BankSupportEntity, Integer> {
+	List<BankSupportEntity> findAllByYear(Integer year);
+	List<BankSupportEntity> findAllByBank_name(String name);
+	List<BankSupportEntity> findAllByBank_nameAndYearAndMonth(String name, Integer year, Integer month);
 }

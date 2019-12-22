@@ -27,14 +27,14 @@ import java.io.Serializable;
 @Setter
 @ToString
 @NoArgsConstructor
-public class BankSupport extends BaseEntity implements Serializable {
+public class BankSupportEntity extends BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer supportId;
 
-	@ManyToOne(targetEntity = Bank.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = BankEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "code")
-	private Bank bank;
+	private BankEntity bank;
 
 	@Column(length = 4, nullable = false)
 	private Integer year;

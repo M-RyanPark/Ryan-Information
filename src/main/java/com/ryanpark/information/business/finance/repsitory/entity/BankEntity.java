@@ -27,7 +27,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 @NoArgsConstructor
-public class Bank extends BaseEntity implements Serializable {
+public class BankEntity extends BaseEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +37,11 @@ public class Bank extends BaseEntity implements Serializable {
 	@Column(length = 100, nullable = false, unique = true)
 	private String name;
 
-	public Bank(String name) {
+	public BankEntity(String name) {
 		this.name = name;
 	}
 
-	public static Bank of(String name) {
-		return new Bank(name);
+	public static BankEntity of(String name) {
+		return new BankEntity(name);
 	}
 }
