@@ -14,8 +14,8 @@ import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEnt
 import com.ryanpark.information.business.finance.service.BankSupportDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;

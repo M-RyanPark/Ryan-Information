@@ -31,9 +31,7 @@ public class BankSupportController {
 	@PostMapping(value = "/api/bank/support/data")
 	@ResponseStatus(HttpStatus.CREATED)
 	public CommonMessageResponse getBankList(@RequestParam("file")MultipartFile multipartFile) {
-		bankSupportApiService.registerBankSupportData(multipartFile);
-
-		return CommonMessageResponse.of("정상적으로 등록되었습니다.");
+		return bankSupportApiService.registerBankSupportData(multipartFile);
 	}
 
 	@GetMapping("/api/bank/list")
