@@ -51,4 +51,14 @@ public class BankSupportEntity extends BaseEntity implements Serializable {
 
 		return supportEntity;
 	}
+
+	public static BankSupportEntity of(String name, Integer year, Integer month, Integer amount) {
+		BankSupportEntity supportEntity = new BankSupportEntity();
+		supportEntity.setBank(BankEntity.of(name));
+		supportEntity.setYear(year);
+		supportEntity.setMonth(month);
+		supportEntity.setAmount(amount);
+
+		return supportEntity;
+	}
 }
