@@ -2,15 +2,12 @@
  * Copyright (c) 2019 Ryan Information Test
  */
 
-package com.ryanpark.information.repository;
+package com.ryanpark.information.common.repository;
 
-import com.ryanpark.information.common.repository.AccountRepository;
 import com.ryanpark.information.common.repository.entity.Account;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,11 +74,5 @@ public class AccountRepositoryTest extends CommonRepositoryTest {
 			accountRepository.save(account);
 			entityManager.flush();
 		});
-	}
-
-	private void expect_ConstraintViolationException(Executable executable) {
-		Exception exception = assertThrows(DataIntegrityViolationException.class, executable);
-
-		assertTrue(exception.getClass().isAssignableFrom(DataIntegrityViolationException.class));
 	}
 }
