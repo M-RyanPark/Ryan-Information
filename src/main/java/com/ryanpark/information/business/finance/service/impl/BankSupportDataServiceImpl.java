@@ -7,6 +7,7 @@ package com.ryanpark.information.business.finance.service.impl;
 import com.ryanpark.information.business.finance.domain.BankSupportData;
 import com.ryanpark.information.business.finance.domain.YearlySupportData;
 import com.ryanpark.information.business.finance.repsitory.BankRepository;
+import com.ryanpark.information.business.finance.repsitory.BankSupportParseData;
 import com.ryanpark.information.business.finance.repsitory.BankSupportRepository;
 import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
@@ -39,6 +40,12 @@ public class BankSupportDataServiceImpl implements BankSupportDataService {
 		if (bankRepository.findByName(bankName).isPresent() == false) {
 			bankRepository.save(BankEntity.of(bankName));
 		}
+	}
+
+	@Transactional
+	@Override
+	public void createBankSupport(BankSupportParseData data) {
+		this.createBankSupport(data.getName(), data.getYear(), data.getMonth(), data.getAmount());
 	}
 
 	@Transactional

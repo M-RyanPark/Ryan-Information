@@ -6,6 +6,7 @@ package com.ryanpark.information.business.finance.service;
 
 import com.ryanpark.information.business.finance.domain.BankSupportData;
 import com.ryanpark.information.business.finance.domain.YearlySupportData;
+import com.ryanpark.information.business.finance.repsitory.BankSupportParseData;
 import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
  */
 public interface BankSupportDataService {
 	void createBank(String name);
+	void createBankSupport(BankSupportParseData bankSupportParseData);
 	void createBankSupport(String bankName, Integer year, Integer month, Integer amount);
 	List<BankEntity> getAllBankList();
 	List<YearlySupportData> getYearlySupportData();

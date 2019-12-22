@@ -4,7 +4,7 @@
 
 package com.ryanpark.information.business.service;
 
-import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
+import com.ryanpark.information.business.finance.repsitory.BankSupportParseData;
 import com.ryanpark.information.business.finance.service.BankSupportFileReader;
 import com.ryanpark.information.business.finance.service.impl.BankSupportFileReaderImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class BankSupportFileReadTest {
 		InputStream is = this.getClass().getResourceAsStream("/test-data.csv");
 		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", is);
 
-		List<BankSupportEntity> list =  bankSupportFileReader.readBankSupportData(mockMultipartFile);
+		List<BankSupportParseData> list =  bankSupportFileReader.readBankSupportData(mockMultipartFile);
 		log.info("result = {}", list);
 
 		int expectedResult = 20 * 9; // test-data.csv 의 유효 금융사 9개 20 row가 존재하므로 기대값은 180

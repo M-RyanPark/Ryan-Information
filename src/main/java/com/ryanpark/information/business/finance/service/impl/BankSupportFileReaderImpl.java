@@ -6,7 +6,7 @@ package com.ryanpark.information.business.finance.service.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
+import com.ryanpark.information.business.finance.repsitory.BankSupportParseData;
 import com.ryanpark.information.business.finance.service.BankSupportFileReader;
 import com.ryanpark.information.framework.exception.BusinessValidationException;
 import com.ryanpark.information.framework.exception.InternalServerException;
@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 public class BankSupportFileReaderImpl implements BankSupportFileReader {
 
 	@Override
-	public List<BankSupportEntity> readBankSupportData(MultipartFile multipartFile) {
+	public List<BankSupportParseData> readBankSupportData(MultipartFile multipartFile) {
 		List<String[]> parsedRawData;
 		try {
 			InputStreamReader input = new InputStreamReader(multipartFile.getInputStream());
@@ -57,7 +57,7 @@ public class BankSupportFileReaderImpl implements BankSupportFileReader {
 
 		List<List<Integer>> bodyList = parsedBodyData(parsedRawData);
 
-		final List<BankSupportEntity> resultList = new ArrayList<>();
+		final List<BankSupportParseData> resultList = new ArrayList<>();
 
 		parseInvalidSizeBodyList(bodyList, headerList.size())
 				.forEach(list -> {
@@ -67,7 +67,7 @@ public class BankSupportFileReaderImpl implements BankSupportFileReader {
 					IntStream.range(2, list.size())
 							.forEach(i -> {
 								String bankName = headerList.get(i);
-								resultList.add(BankSupportEntity.of(bankName, year, month, list.get(i))) ;
+								resultList.add(BankSupportParseData.of(bankName, year, month, list.get(i))) ;
 							});
 				});
 

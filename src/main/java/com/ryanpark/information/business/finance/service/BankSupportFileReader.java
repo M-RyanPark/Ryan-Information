@@ -4,7 +4,7 @@
 
 package com.ryanpark.information.business.finance.service;
 
-import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
+import com.ryanpark.information.business.finance.repsitory.BankSupportParseData;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,5 +15,5 @@ import java.util.List;
  * description : Csv 파일로부터 금융 지원 데이터 처리할 서비스
  */
 public interface BankSupportFileReader {
-	List<BankSupportEntity> readBankSupportData(MultipartFile multipartFile);
+	List<BankSupportParseData> readBankSupportData(MultipartFile multipartFile);
 }
