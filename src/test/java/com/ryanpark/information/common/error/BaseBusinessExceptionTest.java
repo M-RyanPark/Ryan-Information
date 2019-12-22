@@ -69,6 +69,8 @@ public class BaseBusinessExceptionTest {
 	@Test
 	public void check_error_response_of_all_DefaultErrorResponse() {
 		Stream.of(DefaultErrorResponse.values())
+				// 404 에러가 두개이므로 하나는 제외 처리 한다
+				.filter(errorResponse -> errorResponse != DefaultErrorResponse.DATA_NOT_FOUND)
 				.forEach(this::check_error_response);
 	}
 
