@@ -4,6 +4,7 @@
 
 package com.ryanpark.information.framework.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  * @since : 2019-12-21
  * description : ResourceServer Config. /api/** 로 요청 오는 자원에 대한 권한 설정
  */
+@Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
@@ -21,7 +23,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources.resourceId("information-api");
+		resources.resourceId(RESOURCE_ID);
 	}
 
 	@Override
@@ -31,9 +33,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 					.antMatchers("/api/**")
 				.and()
 					.authorizeRequests()
-					.anyRequest().authenticated()
-//					.antMatchers("/api/**").hasAuthority("#oauth2.hasScope('read')")
-//					.antMatchers("/admin/**").hasAuthority(Account.AccountAuthority.ADMIN.name())
+					.anyRequest()
+					.authenticated()
 				;
 
 	}

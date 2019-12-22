@@ -52,7 +52,7 @@ public class ResourceServerAuthorityTest {
 				.characterEncoding("UTF-8")
 		)
 				.andDo(print())
-				.andExpect(status().isForbidden());
+				.andExpect(status().isUnauthorized());
 	}
 
 	@WithMockOAuth2User(
