@@ -9,6 +9,7 @@ import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEnt
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,18 +19,18 @@ import java.util.stream.Collectors;
  * description : 금융 기관 별 년 간 지원 금액 합계 dataO
  */
 @Data
-public class BankSupportData {
-	private BankEntity bank;
+public class BankSupportData implements Serializable {
+	private BankResponseItem bank;
 	private List<YearSupportAmount> yearSupportAmountList;
 
 	public BankSupportData(BankEntity bank) {
-		this.bank = bank;
+		this.bank = BankResponseItem.of(bank);
 		this.yearSupportAmountList = new ArrayList<>();
 	}
 
 	public BankSupportData applySupportAmountList(List<BankSupportEntity> bankSupportList) {
 		bankSupportList.stream()
-				.filter(bankSupport -> this.bank.equals(bankSupport.getBank()))
+				.filter(bankSupport -> this.bank.getName().equals(bankSupport.getBank().getName()))
 				.collect(Collectors.groupingBy(BankSupportEntity::getYear, Collectors.toList()))
 				.forEach((key, value) ->yearSupportAmountList.add(new YearSupportAmount(key, value)))
 		;
@@ -54,7 +55,7 @@ public class BankSupportData {
 	}
 
 	@Data
-	public static class YearSupportAmount {
+	public static class YearSupportAmount implements Serializable {
 		private Integer year;
 		private List<MonthSupportAmount> monthSupportAmountList;
 
@@ -79,7 +80,7 @@ public class BankSupportData {
 
 	@Data
 	@AllArgsConstructor(staticName = "of")
-	public static class MonthSupportAmount {
+	public static class MonthSupportAmount implements Serializable {
 		private Integer month;
 		private Integer amount;
 	}

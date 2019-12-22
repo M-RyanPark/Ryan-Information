@@ -4,11 +4,13 @@
 
 package com.ryanpark.information.business.finance.domain;
 
-import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +21,10 @@ import java.util.stream.Collectors;
  * description : 년단위 금융 기관 별 지원 금액 data
  */
 @Data
-public class YearlySupportData {
+@JsonPropertyOrder({"year", "totalAmount", "detailList"})
+public class YearlySupportData implements Serializable {
 	private Integer year;
+	@JsonProperty("detailList")
 	private List<BankSupportAmount> bankSupportAmountList;
 
 	public YearlySupportData(Integer year) {
@@ -32,7 +36,7 @@ public class YearlySupportData {
 		bankSupportList.stream()
 				.filter(bankSupport -> this.year.equals(bankSupport.getYear()))
 				.collect(Collectors.groupingBy(BankSupportEntity::getBank, Collectors.summingInt(BankSupportEntity::getAmount)))
-				.forEach((key, value) -> bankSupportAmountList.add(new BankSupportAmount(key, value)))
+				.forEach((key, value) -> bankSupportAmountList.add(new BankSupportAmount(BankResponseItem.of(key), value)))
 		;
 
 		return this;
@@ -44,8 +48,8 @@ public class YearlySupportData {
 
 	@Data
 	@AllArgsConstructor
-	public static class BankSupportAmount {
-		private BankEntity bank;
+	public static class BankSupportAmount implements Serializable {
+		private BankResponseItem bank;
 		private Integer amount;
 	}
 }

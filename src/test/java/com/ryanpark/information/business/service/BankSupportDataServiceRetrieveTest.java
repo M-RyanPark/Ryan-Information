@@ -42,16 +42,18 @@ public class BankSupportDataServiceRetrieveTest {
 	@MockBean BankRepository bankRepository;
 	@MockBean BankSupportRepository bankSupportRepository;
 
+	private BankSupportTestData testData = new BankSupportTestData();
+
 	private static final String BANK_NAME_KB = "국민은행";
 	private static final String BANK_NAME_SH = "신한은행";
 	private static final String BANK_NAME_WR = "우리은행";
 
-	private static final BankEntity bankKb = new BankEntity(1, BANK_NAME_KB);
-	private static final BankEntity bankSh = new BankEntity(2, BANK_NAME_SH);
-	private static final BankEntity bankWr = new BankEntity(3, BANK_NAME_WR);
+	private final BankEntity bankKb = testData.getBankKb();
+	private final BankEntity bankSh = testData.getBankSh();
+	private final BankEntity bankWr = testData.getBankWr();
 
-	private final List<BankEntity> bankList = Arrays.asList(bankKb, bankSh, bankWr);
-	private final List<BankSupportEntity> sampleList = sampleData();
+	private final List<BankEntity> bankList = testData.getBankList();
+	private final List<BankSupportEntity> sampleList = testData.getSampleList();
 
 	@BeforeEach
 	public void setUp() {
@@ -115,7 +117,7 @@ public class BankSupportDataServiceRetrieveTest {
 		log.info("result = {}", result);
 
 		assertNotNull(result);
-		assertEquals(bankWr, result.getBank());
+		assertEquals(bankWr.getName(), result.getBank().getName());
 	}
 
 	@Test
@@ -133,45 +135,8 @@ public class BankSupportDataServiceRetrieveTest {
 		log.info("result = {}", result);
 
 		assertNotNull(result);
-		assertEquals(bankSh, result.getBank());
+		assertEquals(bankSh.getName(), result.getBank().getName());
 		assertEquals(2010, result.getMinSupportOfYear().get().getYear());
 		assertEquals(2011, result.getMaxSupportOfYear().get().getYear());
-	}
-
-	private List<BankSupportEntity> sampleData() {
-		List<BankSupportEntity> entityList = new ArrayList<>();
-
-		IntStream.range(1,5)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankKb, 2010, i, 1000));
-				});
-
-		IntStream.range(1,3)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankKb, 2011, i, 1000));
-				});
-
-		IntStream.range(1,9)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankKb, 2012, i, 1000));
-				});
-
-
-		IntStream.range(1,5)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankSh, 2010, i, 300));
-				});
-
-		IntStream.range(1,3)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankSh, 2011, i, 1500));
-				});
-
-		IntStream.range(1,5)
-				.forEach(i -> {
-					entityList.add(BankSupportEntity.of(bankWr, 2011, i, 1200));
-				});
-
-		return entityList;
 	}
 }
