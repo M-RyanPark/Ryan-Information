@@ -5,10 +5,7 @@
 package com.ryanpark.information.business.finance.repsitory.entity;
 
 import com.ryanpark.information.common.repository.entity.BaseEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -44,4 +41,14 @@ public class BankSupportEntity extends BaseEntity implements Serializable {
 
 	@Column(nullable = false)
 	private Integer amount;
+
+	public static BankSupportEntity of(BankEntity bank, Integer year, Integer month, Integer amount) {
+		BankSupportEntity supportEntity = new BankSupportEntity();
+		supportEntity.setBank(bank);
+		supportEntity.setYear(year);
+		supportEntity.setMonth(month);
+		supportEntity.setAmount(amount);
+
+		return supportEntity;
+	}
 }

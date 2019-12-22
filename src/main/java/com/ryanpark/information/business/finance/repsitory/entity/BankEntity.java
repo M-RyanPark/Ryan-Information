@@ -5,10 +5,7 @@
 package com.ryanpark.information.business.finance.repsitory.entity;
 
 import com.ryanpark.information.common.repository.entity.BaseEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,6 +24,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class BankEntity extends BaseEntity implements Serializable {
 
 	@Id
