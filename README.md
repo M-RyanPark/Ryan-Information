@@ -26,7 +26,9 @@
 * OAuth2AuthenticationProcessingFilter, 수정하여  Authorization 헤더에 “Bearer Token”으로 입력 요청 시 토큰 재발급 (미구현)
 #### 2. Resource Server
 * /api/** : 요청은 USER 이상 권한을 소유해야 접근 가능
-* /admin/** : 요청은 ADMIN 이상 권한을 소유해야 접근 가능 
+* /admin/** : 요청은 ADMIN 이상 권한을 소유해야 접근 가능
+#### 3 Datasource
+* H2 인메모리 DB를 이용하여 기동시 jpa가 ddl을 자동 실행하여 스키마를 생성 함. 종료 시 데이터는 소멸 
 
 
 ### 주택 금융
@@ -78,7 +80,10 @@ POST /sign/in HTTP/1.1
 	, "confirmPassword" : "test1"
 }
 
+
+
 ### /api/ 는 로그인, 회원가입을 통해 발급 받은 토큰을 Oauth Bearer Token 으로 전송
+
 
 ### 금융 지원 항목 등록 
 POST /api/bank/support/data HTTP/1.1
@@ -103,9 +108,16 @@ GET /api/bank/support/stats/bank?name=은행명 HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
 
 
-## 실행 방법 
-* spring-boot run : java -jar information-0.0.1-SNAPSHOT.jar app.jar
 
-### Repository
+## 실행 방법 
+* spring-boot run 실행
+* java -jar information-0.0.1-SNAPSHOT.jar app.jar
+* 
+* docker 실행 
+* docker pull sakukiller/information
+* docker run -p 8088:8080 sakukiller/information
+
+
+## Repository
 * Github : https://github.com/M-RyanPark/Ryan-Information
-* Jar Link : 
+* Jar Link : https://drive.google.com/file/d/11nz_yxNb1-OFLYtZmIzRw7qb0SS-Gh6m/view
