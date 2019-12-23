@@ -23,7 +23,7 @@
 * JWT를 이용한 access, refresh token을 사용, JWT secret은 비대칭 key pair를 사용
 #### 1. Authorization Server
 * Authorization Server 에서 Rest Api를 통한 token 발급을 위하여 별도의 grant_type 정의 하여 사용
-* OAuth2AuthenticationProcessingFilter, 수정하여  Authorization 헤더에 “Bearer Token”으로 입력 요청 시 토큰 재발급
+* OAuth2AuthenticationProcessingFilter, 수정하여  Authorization 헤더에 “Bearer Token”으로 입력 요청 시 토큰 재발급 (미구현)
 #### 2. Resource Server
 * /api/** : 요청은 USER 이상 권한을 소유해야 접근 가능
 * /admin/** : 요청은 ADMIN 이상 권한을 소유해야 접근 가능 
@@ -36,7 +36,7 @@
 #### 주택금융 지원 금액 데이터(csv 파일)을 입력받아 저장하는 API
 * 입력 : CSV 파일 
 * 구분자 수가 다른 비정상 행에 대한 validation
-* 첫 행에서 금유기관을 읽어와 금유기관 entity 존재하지 않는 금융 기관을 추가
+* 첫 행에서 금유기관을 읽어와 금융기관 entity 존재하지 않는 금융 기관을 추가
 * 금융 기관의 열 번호를 인식하여 금융 기관 별 지원 금액 entity에 추가 
 #### 금융 기관 목록 조회 API
 * 처리 : 금융 기관 Entity 전체 대상 을 조회하여 출력 
@@ -53,9 +53,59 @@
 * 입력 : 금융 기관
 * 처리 : 지원 금액의 입력 기관 별 데이터를 조회 후 년도별로 group by 하여 지원금의 합계를 구한 후 min / max 값을 조회 
 * 출력 : 년도, 년도별 지원 금액 합계의 mix, max
-#### 2018년 특정 월 ,특정 금융 기관의 금융지원 금액 예측 조회 API
-* 입력 : 년도, 월 , 금융 기관
+#### 2018년 특정 월 ,특정 금융 기관의 금융지원 금액 예측 조회 API (미구현)
+* 입력 : 년도, 월, 금융 기관
 * 처리 : 최근 3, 5, 10 년의 금융 기관 별 흐름 변동 추이와, 금융시장의 전체 추이를 비교하여 가중치를 부여하여 근사값을 추정 
 * 출력 : 년도, 월, 금융 기관 코드, 금융 기관 이름, 예상 지원 금액 
 
-### 실행 방법
+### API 상세 
+
+#### 회원가입
+POST /sign/up HTTP/1.1
+
+{
+	"userId" : "test1"
+	, "password" : "test1"
+	, "confirmPassword" : "test1"
+}
+
+#### 로그인
+POST /sign/in HTTP/1.1
+
+{
+	"userId" : "test1"
+	, "password" : "test1"
+	, "confirmPassword" : "test1"
+}
+
+### /api/ 는 로그인, 회원가입을 통해 발급 받은 토큰을 Oauth Bearer Token 으로 전송
+
+#### 금융 지원 항목 등록 
+POST /api/bank/support/data HTTP/1.1
+Content-Type: multipart/form-data
+Authorization: Bearer [TOKEN_VALUE]
+file : CSV 파일 
+
+#### 금융기관 리스트 조회
+GET /api/bank/list HTTP/1.1
+Authorization: Bearer [TOKEN_VALUE]
+
+#### 연간 지원 통계 조회
+GET /api/bank/support/year/list HTTP/1.1
+Authorization: Bearer [TOKEN_VALUE]
+
+#### 연간 최고 지원 기관 조회
+GET /api/bank/support/year/top/{년도} HTTP/1.1
+Authorization: Bearer [TOKEN_VALUE]
+
+#### 은행 별 통계 조회
+GET /api/bank/support/stats/bank?name=은행명 HTTP/1.1
+Authorization: Bearer [TOKEN_VALUE]
+
+
+### 실행 방법 
+* spring-boot run : java -jar information-0.0.1-SNAPSHOT.jar app.jar
+
+### Repository
+* Github : https://github.com/M-RyanPark/Ryan-Information
+* Jar Link : 
