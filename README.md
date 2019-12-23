@@ -58,9 +58,9 @@
 * 처리 : 최근 3, 5, 10 년의 금융 기관 별 흐름 변동 추이와, 금융시장의 전체 추이를 비교하여 가중치를 부여하여 근사값을 추정 
 * 출력 : 년도, 월, 금융 기관 코드, 금융 기관 이름, 예상 지원 금액 
 
-### API 상세 
+## API 명세 
 
-#### 회원가입
+### 회원가입
 POST /sign/up HTTP/1.1
 
 {
@@ -69,7 +69,7 @@ POST /sign/up HTTP/1.1
 	, "confirmPassword" : "test1"
 }
 
-#### 로그인
+### 로그인
 POST /sign/in HTTP/1.1
 
 {
@@ -80,30 +80,30 @@ POST /sign/in HTTP/1.1
 
 ### /api/ 는 로그인, 회원가입을 통해 발급 받은 토큰을 Oauth Bearer Token 으로 전송
 
-#### 금융 지원 항목 등록 
+### 금융 지원 항목 등록 
 POST /api/bank/support/data HTTP/1.1
 Content-Type: multipart/form-data
 Authorization: Bearer [TOKEN_VALUE]
 file : CSV 파일 
 
-#### 금융기관 리스트 조회
+### 금융기관 리스트 조회
 GET /api/bank/list HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
 
-#### 연간 지원 통계 조회
+### 연간 지원 통계 조회
 GET /api/bank/support/year/list HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
 
-#### 연간 최고 지원 기관 조회
+### 연간 최고 지원 기관 조회
 GET /api/bank/support/year/top/{년도} HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
 
-#### 은행 별 통계 조회
+### 은행 별 통계 조회
 GET /api/bank/support/stats/bank?name=은행명 HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
 
 
-### 실행 방법 
+## 실행 방법 
 * spring-boot run : java -jar information-0.0.1-SNAPSHOT.jar app.jar
 
 ### Repository
