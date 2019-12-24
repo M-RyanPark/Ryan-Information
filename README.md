@@ -63,49 +63,55 @@
 ## API 명세 
 
 ### 회원가입
-POST /sign/up HTTP/1.1
-
+* POST /sign/up HTTP/1.1
 {
 	"userId" : "test1"
 	, "password" : "test1"
 	, "confirmPassword" : "test1"
 }
+* curl -X POST http://localhost:8080/sign/up -H 'Content-Type: application/json' -d '{"userId" : "test1", "password" : "test1", "confirmPassword" : "test1"}'
 
 ### 로그인
-POST /sign/in HTTP/1.1
-
+* POST /sign/in HTTP/1.1
 {
 	"userId" : "test1"
 	, "password" : "test1"
 	, "confirmPassword" : "test1"
 }
-
+* curl -X POST http://localhost:8080/sign/in -H 'Content-Type: application/json' -d '{"userId" : "test1", "password" : "test1"}'
 
 
 ### /api/ 는 로그인, 회원가입을 통해 발급 받은 토큰을 Oauth Bearer Token 으로 전송
 
 
 ### 금융 지원 항목 등록 
-POST /api/bank/support/data HTTP/1.1
+* POST /api/bank/support/data HTTP/1.1
 Content-Type: multipart/form-data
 Authorization: Bearer [TOKEN_VALUE]
 file : CSV 파일 
+* curl -X POST http://localhost:8080/api/bank/support/data -H 'Content-Type: application/x-www-form-urlencoded' -F 'file=@{filePath}'
+
 
 ### 금융기관 리스트 조회
-GET /api/bank/list HTTP/1.1
+* GET /api/bank/list HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
+* curl -X GET http://localhost:8080/api/bank/list -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaW5mb3JtYXRpb24tYXBpIl0sInNjb3BlIjpbInJlYWQiXSwiZXhwIjoxNTc3MTg1MzcxLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjIzZDg4YzY3LTJjNDEtNGU4NS1hNzY0LWVjMDQ1NWUwYmU4NyIsImNsaWVudF9pZCI6ImxvYW5fY2xpZW50In0.QQaIwhqdWIXS01yJnE3W0PXpf7JpjJcEauCKFZwmK32l5x6_5cXqrFFY1a4HlhP8TB7ErKxjNJegd0bzb5mrYM5E1BVd9XA3s5zVNnp11Q6sEGBTiLfuBtd-f6QWXVPM_Xnh3FUGm1RupTSyvyV-eiM6uv_2B6dG5RllXCjeWGqhwBGVeDCg-rMUM7eTR0maTcvGy6DIvyXpOFbsjsvZMrCS7-OHxEs8KAwL0tM_Vp47-MqcATG03VFS3OgZglBg899whwlOra983SIhFggg11Y-I0Ph09ZkTa1qZ8aW-_JtVPLyCEKTrslZ6Dac2nxUO3M_RAuvHBZAc_Ag_UJ8Ww'
 
 ### 연간 지원 통계 조회
-GET /api/bank/support/year/list HTTP/1.1
+* GET /api/bank/support/year/list HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
+* curl -X GET http://localhost:8080/api/bank/support/year/list -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaW5mb3JtYXRpb24tYXBpIl0sInNjb3BlIjpbInJlYWQiXSwiZXhwIjoxNTc3MTg1MzcxLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjIzZDg4YzY3LTJjNDEtNGU4NS1hNzY0LWVjMDQ1NWUwYmU4NyIsImNsaWVudF9pZCI6ImxvYW5fY2xpZW50In0.QQaIwhqdWIXS01yJnE3W0PXpf7JpjJcEauCKFZwmK32l5x6_5cXqrFFY1a4HlhP8TB7ErKxjNJegd0bzb5mrYM5E1BVd9XA3s5zVNnp11Q6sEGBTiLfuBtd-f6QWXVPM_Xnh3FUGm1RupTSyvyV-eiM6uv_2B6dG5RllXCjeWGqhwBGVeDCg-rMUM7eTR0maTcvGy6DIvyXpOFbsjsvZMrCS7-OHxEs8KAwL0tM_Vp47-MqcATG03VFS3OgZglBg899whwlOra983SIhFggg11Y-I0Ph09ZkTa1qZ8aW-_JtVPLyCEKTrslZ6Dac2nxUO3M_RAuvHBZAc_Ag_UJ8Ww'
 
 ### 연간 최고 지원 기관 조회
-GET /api/bank/support/year/top/{년도} HTTP/1.1
+* GET /api/bank/support/year/top/{년도} HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
+* curl -X GET localhost:8080/api/bank/support/year/top/2015 -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaW5mb3JtYXRpb24tYXBpIl0sInNjb3BlIjpbInJlYWQiXSwiZXhwIjoxNTc3MTg1MzcxLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjIzZDg4YzY3LTJjNDEtNGU4NS1hNzY0LWVjMDQ1NWUwYmU4NyIsImNsaWVudF9pZCI6ImxvYW5fY2xpZW50In0.QQaIwhqdWIXS01yJnE3W0PXpf7JpjJcEauCKFZwmK32l5x6_5cXqrFFY1a4HlhP8TB7ErKxjNJegd0bzb5mrYM5E1BVd9XA3s5zVNnp11Q6sEGBTiLfuBtd-f6QWXVPM_Xnh3FUGm1RupTSyvyV-eiM6uv_2B6dG5RllXCjeWGqhwBGVeDCg-rMUM7eTR0maTcvGy6DIvyXpOFbsjsvZMrCS7-OHxEs8KAwL0tM_Vp47-MqcATG03VFS3OgZglBg899whwlOra983SIhFggg11Y-I0Ph09ZkTa1qZ8aW-_JtVPLyCEKTrslZ6Dac2nxUO3M_RAuvHBZAc_Ag_UJ8Ww'
 
 ### 은행 별 통계 조회
-GET /api/bank/support/stats/bank?name=은행명 HTTP/1.1
+* GET /api/bank/support/stats/bank?name=은행명 HTTP/1.1
 Authorization: Bearer [TOKEN_VALUE]
+* curl -X GET http://localhost:8080/api/bank/list?name=%EC%8B%A0%ED%95%9C%EC%9D%80%ED%96%89 -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaW5mb3JtYXRpb24tYXBpIl0sInNjb3BlIjpbInJlYWQiXSwiZXhwIjoxNTc3MTg1MzcxLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6IjIzZDg4YzY3LTJjNDEtNGU4NS1hNzY0LWVjMDQ1NWUwYmU4NyIsImNsaWVudF9pZCI6ImxvYW5fY2xpZW50In0.QQaIwhqdWIXS01yJnE3W0PXpf7JpjJcEauCKFZwmK32l5x6_5cXqrFFY1a4HlhP8TB7ErKxjNJegd0bzb5mrYM5E1BVd9XA3s5zVNnp11Q6sEGBTiLfuBtd-f6QWXVPM_Xnh3FUGm1RupTSyvyV-eiM6uv_2B6dG5RllXCjeWGqhwBGVeDCg-rMUM7eTR0maTcvGy6DIvyXpOFbsjsvZMrCS7-OHxEs8KAwL0tM_Vp47-MqcATG03VFS3OgZglBg899whwlOra983SIhFggg11Y-I0Ph09ZkTa1qZ8aW-_JtVPLyCEKTrslZ6Dac2nxUO3M_RAuvHBZAc_Ag_UJ8Ww'
+
 
 
 
@@ -115,7 +121,7 @@ Authorization: Bearer [TOKEN_VALUE]
 * 
 * docker 실행 
 * docker pull sakukiller/information
-* docker run -p 8088:8080 sakukiller/information
+* docker run -p 8080:8080 sakukiller/information
 
 
 ## Repository
