@@ -23,10 +23,11 @@
 * JWT를 이용한 access, refresh token을 사용, JWT secret은 비대칭 key pair를 사용
 #### 1. Authorization Server
 * Authorization Server 에서 Rest Api를 통한 token 발급을 위하여 별도의 grant_type 정의 하여 사용
-* OAuth2AuthenticationProcessingFilter, 수정하여  Authorization 헤더에 “Bearer Token”으로 입력 요청 시 토큰 재발급 (미구현)
 #### 2. Resource Server
 * /api/** : 요청은 USER 이상 권한을 소유해야 접근 가능
 * /admin/** : 요청은 ADMIN 이상 권한을 소유해야 접근 가능
+* BearerTokenExtractor를 Override한 RefreshBearerTokenExtractor를 ResouceServerConfig에 추가하고
+, OAuth2AuthenticationProcessingFilter 다음 순서로 Token Refresh를 처리할 RefreshBearerTokenProcessingFilter를 추가한다 
 #### 3 Datasource
 * H2 인메모리 DB를 이용하여 기동시 jpa가 ddl을 자동 실행하여 스키마를 생성 함. 종료 시 데이터는 소멸 
 
