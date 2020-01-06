@@ -24,6 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account extends BaseEntity implements Serializable {
 	@Id
+	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userNo;
 

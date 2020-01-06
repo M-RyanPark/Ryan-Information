@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author : Sanghyun Ryan Park (sanghyun.ryan.park@gmail.com)
@@ -68,8 +65,8 @@ public class SignServiceImpl implements SignService {
 		Account account = accountService.findAccount(signInRequest.getUserId())
 				.orElseThrow(() -> BusinessValidationException.of("존재 하지 않는 회원입니다."));
 
-		OAuth2AccessToken oAuth2AccessToken = createToken(account.getUserId(), account.getPassword())
-				.orElseThrow(() -> BadRequestException.of("로그인 처리 중 오류가 발생하였습니다."));
+		OAuth2AccessToken oAuth2AccessToken = createToken(account.getUserId(), signInRequest.getPassword())
+				.orElseThrow(() -> BusinessValidationException.of("로그인 처리 중 오류가 발생하였습니다."));
 
 		return new SignInResponse(oAuth2AccessToken);
 	}
@@ -78,15 +75,13 @@ public class SignServiceImpl implements SignService {
 		try {
 			Map<String, String> oauthParam = new HashMap<>();
 			oauthParam.put("client_id", OAUTH_CLIENT_ID);
-			// todo 계정 권한을 추가하고 권한과 연동 할것인가 ?
-			oauthParam.put("scope", "read,write");
 			oauthParam.put("username", userId);
 			oauthParam.put("password", password);
 
 			TokenRequest tokenRequest = new TokenRequest(
 					oauthParam
 					, OAUTH_CLIENT_ID,
-					Collections.singletonList("read"), REST_API_GRANT_TYPE
+					Arrays.asList("read", "write"), REST_API_GRANT_TYPE
 			);
 
 			return Optional.ofNullable(tokenGranter.grant(REST_API_GRANT_TYPE, tokenRequest));
