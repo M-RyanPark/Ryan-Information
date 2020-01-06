@@ -51,7 +51,7 @@ public class RefreshTokenExtractorTest {
 		MockHttpServletRequest spyRequest = spy(new MockHttpServletRequest());
 		given(spyRequest.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(
-						Arrays.asList(RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE.toLowerCase() + " " + tokenValue))
+						Arrays.asList(RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE + " " + tokenValue))
 				);
 
 		Authentication authentication = refreshBearerTokenExtractor.extract(spyRequest);
@@ -71,9 +71,9 @@ public class RefreshTokenExtractorTest {
 		MockHttpServletRequest spyRequest = spy(new MockHttpServletRequest());
 		given(spyRequest.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(Arrays.asList(
-						OAuth2AccessToken.BEARER_TYPE.toLowerCase() + " " + tokenValue2
-						, RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE.toLowerCase() + " " + tokenValue
-						, OAuth2AccessToken.BEARER_TYPE.toLowerCase() + " " + tokenValue3
+						OAuth2AccessToken.BEARER_TYPE + " " + tokenValue2
+						, RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE + " " + tokenValue
+						, OAuth2AccessToken.BEARER_TYPE + " " + tokenValue3
 						))
 				);
 
@@ -92,7 +92,7 @@ public class RefreshTokenExtractorTest {
 		MockHttpServletRequest spyRequest = spy(new MockHttpServletRequest());
 		given(spyRequest.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(
-						Arrays.asList(RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE.toLowerCase() + " " + tokenValue + " , " + tokenValue2))
+						Arrays.asList(RefreshBearerTokenExtractor.BEARER_REFRESH_TYPE + " " + tokenValue + " , " + tokenValue2))
 				);
 
 		Authentication authentication = refreshBearerTokenExtractor.extract(spyRequest);
@@ -109,7 +109,7 @@ public class RefreshTokenExtractorTest {
 		MockHttpServletRequest spyRequest = spy(new MockHttpServletRequest());
 		given(spyRequest.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(
-						Arrays.asList(OAuth2AccessToken.BEARER_TYPE.toLowerCase() + " " + tokenValue))
+						Arrays.asList(OAuth2AccessToken.BEARER_TYPE + " " + tokenValue))
 				);
 
 		Authentication authentication = refreshBearerTokenExtractor.extract(spyRequest);
@@ -127,12 +127,12 @@ public class RefreshTokenExtractorTest {
 		MockHttpServletRequest spyRequest = spy(new MockHttpServletRequest());
 		given(spyRequest.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(
-						Arrays.asList(OAuth2AccessToken.BEARER_TYPE.toLowerCase() + " " + tokenValue))
+						Arrays.asList(OAuth2AccessToken.BEARER_TYPE + " " + tokenValue))
 				);
 		MockHttpServletRequest spyRequest2 = spy(new MockHttpServletRequest());
 		given(spyRequest2.getHeaders(AUTHORIZATION_HEADER_NAME))
 				.willReturn(Collections.enumeration(
-						Arrays.asList(OAuth2AccessToken.BEARER_TYPE.toLowerCase() + " " + tokenValue))
+						Arrays.asList(OAuth2AccessToken.BEARER_TYPE + " " + tokenValue))
 				);
 
 		Authentication authentication1 = refreshBearerTokenExtractor.extract(spyRequest);

@@ -63,11 +63,11 @@ public class RefreshBearerTokenExtractor extends BearerTokenExtractor {
 	}
 
 	private boolean isBearerTokenHeader(String headerValue) {
-		return headerValue.startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase());
+		return headerValue.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase());
 	}
 
 	private boolean isBearerRefreshTokenHeader(String headerValue) {
-		return headerValue.startsWith(BEARER_REFRESH_TYPE.toLowerCase());
+		return headerValue.toLowerCase().startsWith(BEARER_REFRESH_TYPE.toLowerCase());
 	}
 
 	private String extractTokenValue(@NonNull String headerValue) {
