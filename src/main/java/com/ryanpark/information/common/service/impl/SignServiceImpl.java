@@ -11,18 +11,15 @@ import com.ryanpark.information.common.domain.api.SignUpResponse;
 import com.ryanpark.information.common.repository.entity.Account;
 import com.ryanpark.information.common.service.AccountService;
 import com.ryanpark.information.common.service.SignService;
+import com.ryanpark.information.common.service.TokenManager;
 import com.ryanpark.information.framework.exception.BadRequestException;
 import com.ryanpark.information.framework.exception.BusinessValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.TokenGranter;
-import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
-import java.util.*;
 
 /**
  * @author : Sanghyun Ryan Park (sanghyun.ryan.park@gmail.com)
@@ -35,11 +32,8 @@ import java.util.*;
 @Slf4j
 public class SignServiceImpl implements SignService {
 
-	private static final String REST_API_GRANT_TYPE = "rest_api";
-	private static final String OAUTH_CLIENT_ID = "loan_client";
-
-	final private AccountService accountService;
-	final private TokenGranter tokenGranter;
+	final AccountService accountService;
+	final TokenManager tokenManager;
 
 	@Override
 	@Transactional
@@ -50,8 +44,8 @@ public class SignServiceImpl implements SignService {
 
 		Account newAccount = accountService.createAccount(signUpRequest.getUserId(), signUpRequest.getPassword());
 
-		OAuth2AccessToken oAuth2AccessToken = createToken(newAccount.getUserId(), signUpRequest.getPassword())
-				.orElseThrow(() -> BadRequestException.of("가입 처리 중 오류가 발생하였습니다."));
+		OAuth2AccessToken oAuth2AccessToken = tokenManager.createAccessToken(newAccount.getUserId(), signUpRequest.getPassword())
+				.orElseThrow(() -> BusinessValidationException.of("가입 처리 중 오류가 발생하였습니다."));
 
 		return new SignUpResponse(oAuth2AccessToken);
 	}
@@ -65,29 +59,9 @@ public class SignServiceImpl implements SignService {
 		Account account = accountService.findAccount(signInRequest.getUserId())
 				.orElseThrow(() -> BusinessValidationException.of("존재 하지 않는 회원입니다."));
 
-		OAuth2AccessToken oAuth2AccessToken = createToken(account.getUserId(), signInRequest.getPassword())
+		OAuth2AccessToken oAuth2AccessToken = tokenManager.createAccessToken(account.getUserId(), signInRequest.getPassword())
 				.orElseThrow(() -> BusinessValidationException.of("로그인 처리 중 오류가 발생하였습니다."));
 
 		return new SignInResponse(oAuth2AccessToken);
-	}
-
-	private Optional<OAuth2AccessToken> createToken(@NotNull String userId, @NotNull String password) {
-		try {
-			Map<String, String> oauthParam = new HashMap<>();
-			oauthParam.put("client_id", OAUTH_CLIENT_ID);
-			oauthParam.put("username", userId);
-			oauthParam.put("password", password);
-
-			TokenRequest tokenRequest = new TokenRequest(
-					oauthParam
-					, OAUTH_CLIENT_ID,
-					Arrays.asList("read", "write"), REST_API_GRANT_TYPE
-			);
-
-			return Optional.ofNullable(tokenGranter.grant(REST_API_GRANT_TYPE, tokenRequest));
-		} catch (Exception e) {
-			log.error("Access Token 생성 중 에러 발생 : {}", e.getMessage(), e);
-			return Optional.empty();
-		}
 	}
 }

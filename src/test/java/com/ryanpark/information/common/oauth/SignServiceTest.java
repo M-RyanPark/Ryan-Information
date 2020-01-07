@@ -11,6 +11,7 @@ import com.ryanpark.information.common.domain.api.SignUpResponse;
 import com.ryanpark.information.common.repository.entity.Account;
 import com.ryanpark.information.common.service.AccountService;
 import com.ryanpark.information.common.service.SignService;
+import com.ryanpark.information.common.service.TokenManager;
 import com.ryanpark.information.common.service.impl.SignServiceImpl;
 import com.ryanpark.information.framework.exception.BadRequestException;
 import com.ryanpark.information.framework.exception.BusinessValidationException;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -46,7 +48,7 @@ public class SignServiceTest {
 	@Autowired SignService signService;
 
 	@MockBean AccountService accountService;
-	@MockBean TokenGranter tokenGranter;
+	@MockBean TokenManager tokenManager;
 
 	OAuth2AccessToken oAuth2AccessToken;
 
@@ -54,7 +56,7 @@ public class SignServiceTest {
 	public void setup() {
 		oAuth2AccessToken = Mockito.mock(OAuth2AccessToken.class);
 
-		given(tokenGranter.grant(anyString(), any(TokenRequest.class))).willReturn(oAuth2AccessToken);
+		given(tokenManager.createAccessToken(anyString(), anyString())).willReturn(Optional.of(oAuth2AccessToken));
 	}
 
 	@Test
@@ -68,8 +70,10 @@ public class SignServiceTest {
 
 		assertNotNull(response);
 
-		verify(accountService).createAccount(anyString(), anyString());
-		verify(tokenGranter).grant(anyString(), any(TokenRequest.class));
+		then(accountService).should()
+				.createAccount(anyString(), anyString());
+		then(tokenManager).should()
+				.createAccessToken(anyString(), anyString());
 	}
 
 	@Test
@@ -90,8 +94,10 @@ public class SignServiceTest {
 		SignInResponse response = signService.signIn(signInRequest);
 
 		assertNotNull(response);
-		verify(accountService).findAccount(anyString());
-		verify(tokenGranter).grant(anyString(), any(TokenRequest.class));
+		then(accountService).should()
+				.findAccount(anyString());
+		then(tokenManager).should()
+				.createAccessToken(anyString(), anyString());
 	}
 
 	@Test
@@ -104,7 +110,8 @@ public class SignServiceTest {
 			signService.signIn(signInRequest);
 		});
 
-		verify(accountService).findAccount(anyString());
+		then(accountService).should()
+				.findAccount(anyString());
 	}
 
 	private SignUpRequest mockSignUpRequest(String userId) {
