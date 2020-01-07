@@ -10,6 +10,7 @@ import com.github.ahunigel.test.security.oauth2.MockTokenServices;
 import com.github.ahunigel.test.security.oauth2.WithMockOAuth2Client;
 import com.github.ahunigel.test.security.oauth2.WithMockOAuth2User;
 import com.ryanpark.information.common.service.AccountService;
+import com.ryanpark.information.common.service.TokenManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		controllers = ResourceServerConfigTestController.class
 		, includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class, EnableResourceServer.class, EnableAuthorizationServer.class})
 )
-@MockBean(classes = {UserDetailsService.class, DataSource.class, AccountService.class})
+@MockBean(classes = {UserDetailsService.class, DataSource.class, AccountService.class, TokenManager.class})
 @MockTokenServices
 public class ResourceServerAuthorityTest {
 

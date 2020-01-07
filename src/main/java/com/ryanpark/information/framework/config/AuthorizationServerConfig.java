@@ -115,7 +115,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return new RestApiTokenGranter(authenticationManager, tokenService, clientDetailsService);
 	}
 
-	static class RestApiTokenGranter extends ResourceOwnerPasswordTokenGranter {
+	public static class RestApiTokenGranter extends ResourceOwnerPasswordTokenGranter {
 		private static final String REST_API_GRANT_TYPE = "rest_api";
 
 		RestApiTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService) {

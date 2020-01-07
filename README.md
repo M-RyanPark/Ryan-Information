@@ -27,7 +27,7 @@
 * /api/** : 요청은 USER 이상 권한을 소유해야 접근 가능
 * /admin/** : 요청은 ADMIN 이상 권한을 소유해야 접근 가능
 * BearerTokenExtractor를 Override한 RefreshBearerTokenExtractor를 ResouceServerConfig에 추가하고
-, OAuth2AuthenticationProcessingFilter 다음 순서로 Token Refresh를 처리할 RefreshBearerTokenProcessingFilter를 추가한다 
+, OAuth2AuthenticationProcessingFilter 다음 순서로 Token Refresh를 처리할 RefreshBearerTokenProcessingFilter를 추가하고 response 리프레쉬 된 Token 값을 반환한다 
 #### 3 Datasource
 * H2 인메모리 DB를 이용하여 기동시 jpa가 ddl을 자동 실행하여 스키마를 생성 함. 종료 시 데이터는 소멸 
 
