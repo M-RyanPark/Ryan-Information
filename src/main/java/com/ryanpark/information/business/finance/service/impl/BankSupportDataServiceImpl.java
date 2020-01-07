@@ -13,10 +13,10 @@ import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 import com.ryanpark.information.business.finance.repsitory.entity.BankSupportEntity;
 import com.ryanpark.information.business.finance.service.BankSupportDataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class BankSupportDataServiceImpl implements BankSupportDataService {
 
 	@Transactional
 	@Override
-	public void createBankSupport(@NotNull String bankName, @NotNull Integer year, @NotNull Integer month, @NotNull Integer amount) {
+	public void createBankSupport(@NonNull String bankName, @NonNull Integer year, @NonNull Integer month, @NonNull Integer amount) {
 		final BankEntity bankEntity = bankRepository.findByName(bankName)
 				.orElseGet(() -> BankEntity.of(bankName));
 
@@ -68,7 +68,7 @@ public class BankSupportDataServiceImpl implements BankSupportDataService {
 	}
 
 	@Override
-	public Optional<BankSupportData> getTopBankSupportDataOfYear(@NotNull Integer year) {
+	public Optional<BankSupportData> getTopBankSupportDataOfYear(@NonNull Integer year) {
 		return findBankSupportDataOfYear(bankSupportRepository.findAllByYear(year))
 				.stream()
 				.max(Comparator.comparing(BankSupportData::getTotalSupportAmount))
@@ -76,7 +76,7 @@ public class BankSupportDataServiceImpl implements BankSupportDataService {
 	}
 
 	@Override
-	public Optional<BankSupportData> getTotalBankSupportData(@NotNull String bankName) {
+	public Optional<BankSupportData> getTotalBankSupportData(@NonNull String bankName) {
 		return findBankSupportDataOfYear(bankSupportRepository.findAllByBank_name(bankName))
 				.stream()
 				.findFirst()
