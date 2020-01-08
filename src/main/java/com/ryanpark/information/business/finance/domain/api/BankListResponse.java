@@ -8,8 +8,8 @@ import com.ryanpark.information.business.finance.domain.BankResponseItem;
 import com.ryanpark.information.business.finance.repsitory.entity.BankEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.lang.NonNull;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class BankListResponse implements Serializable {
 	private String desc = "년도 별 주택 금융 공급 현황";
 	private List<BankResponseItem> contents;
 
-	public BankListResponse(@NotNull List<BankEntity> bankEntityList) {
+	public BankListResponse(@NonNull List<BankEntity> bankEntityList) {
 		this.contents = bankEntityList.stream()
 				.map(bankEntity -> BankResponseItem.of(bankEntity.getCode(), bankEntity.getName()))
 				.collect(Collectors.toList())

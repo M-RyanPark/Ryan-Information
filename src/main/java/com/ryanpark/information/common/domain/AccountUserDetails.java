@@ -62,4 +62,8 @@ public class AccountUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return account.isActive();
 	}
+
+	public Long getUserNo() {
+		return this.account.getUserNo();
+	}
 }
